@@ -55,7 +55,7 @@ const RobotControl = ({ routeToEdit, onFinishEditing }) => {
             setCurrentRouteMoves([]);
             return;
         }
-        const movesRef = ref(db, `routes2/${currentRouteId}/moves`);
+        const movesRef = ref(db, `routes3/${currentRouteId}/moves`);
         const listener = onValue(movesRef, (snapshot) => {
             const data = snapshot.val();
             const movesArray = data ? Object.keys(data).map(key => ({ key, ...data[key] })) : [];
@@ -81,7 +81,7 @@ const RobotControl = ({ routeToEdit, onFinishEditing }) => {
         if (isMoving || !isSessionActive) return;
 
         if (moveBeingReplaced) {
-            const moveRef = ref(db, `routes2/${currentRouteId}/moves/${moveBeingReplaced}`);
+            const moveRef = ref(db, `routes3/${currentRouteId}/moves/${moveBeingReplaced}`);
             update(moveRef, { direction, duration: 0 })
                 .then(() => {
                     setActiveMoveKey(moveBeingReplaced);
@@ -90,7 +90,7 @@ const RobotControl = ({ routeToEdit, onFinishEditing }) => {
                     setElapsedTime(0);
                 });
         } else {
-            const movesRef = ref(db, `routes2/${currentRouteId}/moves`);
+            const movesRef = ref(db, `routes3/${currentRouteId}/moves`);
             const newMoveRef = push(movesRef);
             set(newMoveRef, { direction, duration: 0 })
                 .then(() => {
@@ -106,7 +106,7 @@ const RobotControl = ({ routeToEdit, onFinishEditing }) => {
         if (!isMoving || !activeMoveKey) return;
 
         const finalDuration = elapsedTime > 0 ? elapsedTime : 1;
-        const moveRef = ref(db, `routes2/${currentRouteId}/moves/${activeMoveKey}`);
+        const moveRef = ref(db, `routes3/${currentRouteId}/moves/${activeMoveKey}`);
         update(moveRef, { duration: finalDuration })
             .then(() => {
                 setIsMoving(false);
@@ -161,7 +161,7 @@ const RobotControl = ({ routeToEdit, onFinishEditing }) => {
             alert('Please enter a name for the route.');
             return;
         }
-        const newRouteRef = push(ref(db, 'routes2'));
+        const newRouteRef = push(ref(db, 'routes3'));
         set(newRouteRef, { name: routeName, createdAt: new Date().toISOString() })
             .then(() => {
                 setCurrentRouteId(newRouteRef.key);
@@ -314,5 +314,6 @@ const RobotControl = ({ routeToEdit, onFinishEditing }) => {
         </div>
     );
 };
+
 
 export default RobotControl;
