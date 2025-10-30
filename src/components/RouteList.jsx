@@ -9,7 +9,7 @@ const RouteList = ({ onEdit }) => {
     const [selectedRoute, setSelectedRoute] = useState(null);
 
     useEffect(() => {
-        const routesRef = ref(db, 'routes1');
+        const routesRef = ref(db, 'routes3');
         const listener = onValue(routesRef, (snapshot) => {
             const data = snapshot.val();
             const routesArray = data
@@ -23,7 +23,7 @@ const RouteList = ({ onEdit }) => {
 
     const handleDelete = (routeId) => {
         if (window.confirm('Are you sure you want to delete this route?')) {
-            const routeRef = ref(db, `routes1/${routeId}`);
+            const routeRef = ref(db, `routes3/${routeId}`);
             remove(routeRef)
                 .then(() => {
                     alert('Route deleted successfully!');
@@ -79,3 +79,4 @@ const RouteList = ({ onEdit }) => {
 };
 
 export default RouteList;
+
